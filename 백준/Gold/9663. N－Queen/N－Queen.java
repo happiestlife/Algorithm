@@ -23,6 +23,8 @@ public class Main {
         n = Integer.parseInt(br.readLine());
         map = new boolean[n][n];
 
+        // 퀸이 n개 이려면 한층에 한개씩 존재해야 한다.
+        // 따라서 DFS는 X축 한 칸씩에 대해서 실시
         for (int i = 0; i < n; i++) {
             dfs(0, i, 1);
         }
@@ -34,22 +36,15 @@ public class Main {
 
     public static void dfs(int x, int y, int level) {
         /**
+         * 0. 만약 n과 level이 같다면 count++
          * 1. 방문 check
          * 2. 연결된 곳으로 순회
          *   3. 갈 수 있는가
-         *   - 전 노드 제외 & 방문하지 않은 map 모든 곳
+         *   - 이전 노드 다음층(x+1) & 이전 퀸들과 겹치지 않는 동선(가려는 노드의 왼쪽 위로, 오른쪽 위로 향하는 대각에 퀸이 있는지 검사)
          *      4. 간다
-         *      * 만약 n과 level이 같다면 count++, 가지는 않음
          * 5. 방문 ckeckout
          */
         if (level == n) {
-//            System.out.println("level " + level);
-//            for (int[] ints : m) {
-//                for (int i : ints) {
-//                    System.out.print(i + " ");
-//                }
-//                System.out.println();
-//            }
             count++;
             return;
         }
