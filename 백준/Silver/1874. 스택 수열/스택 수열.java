@@ -1,59 +1,50 @@
 import java.io.*;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Stack;
 
 public class Main {
-    public static void main(String args[]) throws IOException {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int sequenceNum = Integer.parseInt(br.readLine());
-        Stack<Integer> stack = new Stack<>();
-        Queue<String> result = new LinkedList<>();
 
-        int fail = 0;
-        int sequenceArrayIndex = 1;
-        int sequenceArray[] = new int[sequenceNum];
-        for(int i = 0; i < sequenceNum; i++)
-            sequenceArray[i] = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(br.readLine());
+        int[] nums = new int[n];
 
-        for(int i = 0; i < sequenceNum; i++){
-            if(sequenceArrayIndex == 1){
-                while(sequenceArrayIndex <= sequenceArray[i]){
-                    stack.push(sequenceArrayIndex++);
-                    result.add("+");
-                }
-                stack.pop();
-                result.add("-");
-            }else if(sequenceArray[i] < sequenceArray[i-1]){
-                while (true) {
-                    if(stack.empty()){
-                        fail = 1;
-                        break;
-                    }
-                    int data = stack.pop();
-                    result.add("-");
-                    if (data == sequenceArray[i]) break;
-                }
-            }else{
-                if(sequenceArrayIndex > sequenceArray[i]){
-                    fail = 1;
-                    break;
-                }
-                while(sequenceArrayIndex <= sequenceArray[i]){
-                    stack.push(sequenceArrayIndex++);
-                    result.add("+");
-                }
-                stack.pop();
-                result.add("-");
-            }
+        for (int i = 0; i < n; i++) {
+            nums[i] = Integer.parseInt(br.readLine());
         }
-        if(fail == 1)
-            System.out.print("NO");
-        else {
-            while(!result.isEmpty()){
-                System.out.println(result.poll());
+
+        int level = 1;
+        boolean isFailed = false;
+        Stack<Integer> s = new Stack<>();
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            if ((s.isEmpty() && level > nums[i]) ||
+                    (!s.isEmpty() && s.peek() < nums[i] && level > nums[i])) {
+                isFailed = true;
+                break;
             }
+
+            if (s.isEmpty() || s.peek() < nums[i]) {
+                do {
+                    s.push(level++);
+                    sb.append("+\n");
+                } while (s.peek() < nums[i]);
+            }
+            else if(s.peek() > nums[i]) {
+                while(s.peek() > nums[i]){
+                    s.pop();
+                    sb.append("-\n");
+                }
+            }
+
+            s.pop();
+            sb.append("-\n");
         }
+
+        if(isFailed)
+            System.out.println("NO\n");
+        else
+            System.out.println(sb);
 
         br.close();
     }
