@@ -12,6 +12,9 @@ class Solution {
         int[] HAMBURGER = {BREAD, MEAT, VEGETABLE, BREAD};
 
         int count = 0;
+        // order 스택에는 만들어져 전달된 재료들을 차례대로 넣는다.
+        // tmp 스택에는 햄버거가 만들어졌다고 판단이 되었을 때 order의 재료를 tmp에 넣으면서 검사
+        // 만약 햄버거가 되지 않았다면 tmp있는 모든 재료를 order 스택에 되돌려 넣기
         Stack<Integer> order = new Stack<>();
         Stack<Integer> tmp = new Stack<>();
         for (int i = 0; i < ingredient.length; i++) {
@@ -32,7 +35,8 @@ class Solution {
                 }
 
                 if (!isFail) {
-                   tmp.clear();
+                    // 햄버거 제작에 성공했다면 tmp에는 아직 햄버거가 남아있기 때문에 삭제시키기
+                    tmp.clear();
                     count++;
                 }
             }
