@@ -10,13 +10,14 @@ class Solution {
         for (int i = 0; i < babbling.length; i++) {
             String s = babbling[i];
 
-            // stack에 각 단어 채우기
+            // stack을 발음한 단어의 문자로 채우기
             stack.clear();
             for (int j = s.length() - 1; j >= 0; j--) {
                 stack.add(s.charAt(j));
             }
 
             // 비교하기
+            // bfrPronounce는 이전에 발음한 단어를 다시 발음가능하다고 판단하지 않기 위함
             int bfrPronounce = -1;
             boolean isFail = false;
             while (!stack.isEmpty()) {
@@ -27,7 +28,7 @@ class Solution {
                 for (; j < pronounce.length; j++) {
                     if (c == pronounce[j].charAt(0) && bfrPronounce != j) {
                         bfrPronounce = j;
-                        isFail = isSame(stack, pronounce[j]);
+                        isFail = isNotSame(stack, pronounce[j]);
                         break;
                     }
                 }
@@ -47,11 +48,11 @@ class Solution {
         return count;
     }
     
-    public static boolean isSame(Stack<Character> ori, String comp) {
+    public static boolean isNotSame(Stack<Character> ori, String comp) {
         for (int i = 0; i < comp.length(); i++) {
-            // 발음하려는 남은 단어가 바닥났지만 더 발음을 해야할 경우 || 발음할 수 없을 경우
-            if((ori.isEmpty() && i < comp.length())
-                || ori.pop() != comp.charAt(i)){
+            // 발음하려는 남은 단어가 바닥났지만 더 발음을 해야할 경우 || 발음할 수 없을 경우 (문자가 다름)
+            if((ori.isEmpty() && i < comp.length()) || 
+                ori.pop() != comp.charAt(i)){
                 return true;
             }
         }
