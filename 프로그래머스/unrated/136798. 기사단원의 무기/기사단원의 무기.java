@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 class Solution {
     public int solution(int number, int limit, int power) {
+        // 소인수분해를 통해 각 소수의 (지수+1) 곱셈을 통해서 구함
         // 소수 구하기
         boolean[] isNotPrime = new boolean[number + 1];
         ArrayList<int[]> primeList = new ArrayList<>();
@@ -21,7 +22,7 @@ class Solution {
             int knight = i;
             primeList.forEach(o -> o[1] = 0);
 
-                        // 약수 개수 구하기
+            // 약수 개수 구하기
             // 1. 각 소수를 몇개씩 사용해서 나눠지는지 알아내기
             int idx = 0;
             while (knight > 1) {
@@ -35,7 +36,7 @@ class Solution {
                 idx++;
             }
             
-            // 2. 소구 총 개수를 구하기 (공식 사용)
+            // 2. 약수 총 개수를 구하기 (공식 사용)
             int x = 1;
             for (int j = 0; j < primeList.size(); j++) {
                 if(primeList.get(j)[1] > 0){
