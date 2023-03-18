@@ -6,6 +6,7 @@ class Solution {
     
     int solution(int[][] land) {
         dp = new int[land.length][4];
+        // 땅이 0인 경우를 제외하기 위한 초기화
         for(int i = 0; i < dp.length; i++)
             Arrays.fill(dp[i], -1);
         
@@ -21,9 +22,6 @@ class Solution {
         if(r == land.length - 1){
             return dp[r][c] = land[r][c];
         }
-        // else if(dp[r][c] != 0){
-        //     return dp[r][c];
-        // }
 
         int max = 0;
         for (int i = 0; i < land[r].length; i++) {
