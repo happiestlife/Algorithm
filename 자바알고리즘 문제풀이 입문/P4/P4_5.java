@@ -20,35 +20,31 @@ public class P4_5 {
             nums[i] = Integer.parseInt(stk.nextToken());
         }
 
-        Arrays.sort(nums, Collections.reverseOrder());
-
         int sum = 0;
-        TreeSet<Integer> treeSet = new TreeSet<>();
-        boolean isFound = false;
-        for (int i = 0; i < nums.length - 2; i++) {
+        TreeSet<Integer> treeSet = new TreeSet<>(Collections.reverseOrder());
+        for (int i = 0; i < nums.length; i++) {
             sum += nums[i];
-            for (int j = i + 1; j < nums.length - 1; j++) {
+            for (int j = i + 1; j < nums.length; j++) {
                 sum += nums[j];
                 for (int l = j + 1; l < nums.length; l++) {
                     sum += nums[l];
                     treeSet.add(sum);
-                    if(treeSet.size() == k){
-                        isFound = true;
-                        break;
-                    }
                     sum -= nums[l];
                 }
-                if(isFound)
-                    break;
                 sum -= nums[j];
             }
-            if(isFound)
-                break;
             sum -= nums[i];
         }
-        int rs = treeSet.first();
-        if(!isFound)
-            rs = -1;
+
+        int rs = -1;
+        int cnt = 0;
+        for (Integer num : treeSet) {
+            cnt++;
+            if(cnt == k){
+                rs = num;
+                break;
+            }
+        }
         System.out.println(rs);
 
         br.close();
