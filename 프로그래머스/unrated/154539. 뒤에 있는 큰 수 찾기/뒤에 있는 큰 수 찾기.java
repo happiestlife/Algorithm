@@ -29,22 +29,48 @@ class Solution {
 //         return rs;
 //     }
     
+//     public int[] solution(int[] numbers) {
+//         int[] rs = new int[numbers.length];
+        
+//         rs[numbers.length - 1] = -1;
+//         for (int i = rs.length - 2; i >= 0; i--) {
+//             if(numbers[i] < numbers[i+1]){
+//                 rs[i] = numbers[i+1];
+//             }
+//             else{
+//                 for (int j = i+1; j < rs.length; j++) {
+//                     if (rs[j] <= numbers[i]) {
+//                         if (rs[j] == -1) {
+//                             rs[i] = -1;
+//                             break;
+//                         }
+//                     }
+//                     if (rs[j] > numbers[i]) {
+//                         rs[i] = rs[j];
+//                         break;
+//                     }
+//                 }
+//             }
+//         }
+
+//         return rs;
+//     }
+    
     public int[] solution(int[] numbers) {
         int[] rs = new int[numbers.length];
-        
+
+        int max = numbers[numbers.length - 1];
         rs[numbers.length - 1] = -1;
         for (int i = rs.length - 2; i >= 0; i--) {
             if(numbers[i] < numbers[i+1]){
                 rs[i] = numbers[i+1];
+            } 
+            else if(max <= numbers[i]){
+                rs[i] = -1;
+                max = numbers[i];
             }
             else{
                 for (int j = i+1; j < rs.length; j++) {
-                    if (rs[j] <= numbers[i]) {
-                        if (rs[j] == -1) {
-                            rs[i] = -1;
-                            break;
-                        }
-                    }
                     if (rs[j] > numbers[i]) {
                         rs[i] = rs[j];
                         break;
