@@ -14,13 +14,41 @@ public class Main {
             arr[i] = Integer.parseInt(br.readLine());
         }
 
-        for (int i = 0; i < arr.length - 1; i++) {
-            for (int j = 0; j < arr.length - 1 - i; j++) {
-                if(arr[j] > arr[j + 1]){
-                    int tmp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = tmp;
-                }
+        // 1. 버블 정렬
+//        for(int i = 0; i < arr.length - 1; i++){
+//            for (int j = 0; j < arr.length - 1 - i; j++) {
+//                if(arr[j] > arr[j + 1]){
+//                    int tmp  = arr[j];
+//                    arr[j] = arr[j + 1];
+//                    arr[j + 1] = tmp;
+//                }
+//            }
+//        }
+
+        // 2. 선택 정렬
+//        for(int i = 0; i < arr.length - 1; i++){
+//            int minIdx = i;
+//            for(int j = i; j < arr.length; j++){
+//                if(arr[minIdx] > arr[j]){
+//                    minIdx = j;
+//                }
+//            }
+//
+//            if(minIdx != i){
+//                int tmp = arr[i];
+//                arr[i] = arr[minIdx];
+//                arr[minIdx] = tmp;
+//            }
+//        }
+
+        // 3. 삽입 정렬
+        for(int i = 1; i < arr.length; i++){
+            int j = i;
+            while (j > 0 && arr[j - 1] > arr[j]) {
+                int tmp = arr[j - 1];
+                arr[j - 1] = arr[j];
+                arr[j] = tmp;
+                j--;
             }
         }
 
