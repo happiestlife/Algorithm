@@ -7,10 +7,6 @@ class Solution {
         private int s;
         private int time;
         
-        @Override
-        public String toString(){
-            return name + ", " + s + ", " + time;
-        }
     }
     
     public String[] solution(String[][] plans) {
