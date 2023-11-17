@@ -13,7 +13,7 @@ public class Main {
         StringTokenizer stk = new StringTokenizer(br.readLine());
         int start = Integer.parseInt(stk.nextToken());
         int end = Integer.parseInt(stk.nextToken());
-        
+
         long[] visitCnt = new long[100001];
         Arrays.fill(visitCnt, INF);
 
@@ -32,14 +32,16 @@ public class Main {
                 break;
             }
 
-            if (db <= 100000 && visitCnt[db] == INF) {
-                q.add(db);
-                visitCnt[db] = visitCnt[cur] + 1;
-            }
+            if(cur < end) {
+                if (db <= 100000 && visitCnt[db] == INF) {
+                    q.add(db);
+                    visitCnt[db] = visitCnt[cur] + 1;
+                }
 
-            if (plusOne <= 100000 && visitCnt[plusOne] == INF) {
-                q.add(plusOne);
-                visitCnt[plusOne] = visitCnt[cur] + 1;
+                if (plusOne <= 100000 && visitCnt[plusOne] == INF) {
+                    q.add(plusOne);
+                    visitCnt[plusOne] = visitCnt[cur] + 1;
+                }
             }
 
             if(minusOne >= 0 && visitCnt[minusOne] == INF) {
