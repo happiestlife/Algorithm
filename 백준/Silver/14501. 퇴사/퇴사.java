@@ -30,8 +30,11 @@ public class Main {
             int span = consultations[i][spanIdx];
             int cost = consultations[i][costIdx];
 
+            // i일에 대한 최대 이익이 나오지 않은 경우, i-1까지의 최대 이익으로 설정
             dp[i] = Math.max(dp[i], prevMaxCost);
+            // 현재 상담을 했을 때 그 상담의 종료기간이 일하는 마지막 날보다 이전이어야 한다.
             if(startDay + span - 1 <= workDayLen) {
+                // 현재일에 들어온 상담을 할 경우, (현재일 + 상담에 걸린 시간) 날짜의 최대 이익을 설정
                 dp[startDay + span] = Math.max(dp[startDay + span], dp[startDay] + cost);
             }
             prevMaxCost = Math.max(prevMaxCost, dp[i]);
