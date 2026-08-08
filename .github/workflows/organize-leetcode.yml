@@ -1,0 +1,89 @@
+name: Organize LeetCode Folders
+
+on:
+  schedule:
+    # 매일 03:07 (Asia/Seoul) 실행
+    # 정각은 GitHub Actions 부하가 몰려 지연/드롭 가능성이 있어 7분을 띄웠습니다.
+    - cron: '7 3 * * *'
+      timezone: 'Asia/Seoul'
+  workflow_dispatch:   # 수동 실행(테스트용)
+
+permissions:
+  contents: write      # 커밋/푸시에 필요한 최소 권한
+
+concurrency:
+  group: organize-leetcode
+  cancel-in-progress: false
+
+jobs:
+  organize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Move LeetCode folders into LeetCode/
+        id: move
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+
+          TARGET_DIR="LeetCode"
+          # 0002-add-two-numbers, 0133-clone-graph, 0207-course-schedule 형식
+          PATTERN='^[0-9]{4}-[a-z0-9]+(-[a-z0-9]+)*$'
+
+          mkdir -p "$TARGET_DIR"
+          moved=0
+
+          # */ 글롭은 숨김 디렉터리(.github 등)를 매칭하지 않습니다.
+          for path in */; do
+            name="${path%/}"
+
+            if [[ "$name" == "$TARGET_DIR" ]]; then
+              continue
+            fi
+
+            if [[ ! "$name" =~ $PATTERN ]]; then
+              continue
+            fi
+
+            if [[ -e "$TARGET_DIR/$name" ]]; then
+              echo "::warning::대상 경로에 이미 존재하여 건너뜁니다: $name"
+              continue
+            fi
+
+            echo "이동: $name -> $TARGET_DIR/$name"
+            if git ls-files --error-unmatch -- "$name" > /dev/null 2>&1; then
+              # 이미 추적 중인 폴더 → git mv 로 이력 보존
+              git mv -- "$name" "$TARGET_DIR/$name"
+            else
+              # 추적되지 않은 폴더 → 이동 후 스테이징
+              mv -- "$name" "$TARGET_DIR/$name"
+              git add -- "$TARGET_DIR/$name"
+            fi
+
+            moved=$((moved + 1))
+          done
+
+          echo "이동한 폴더 수: $moved"
+          echo "moved=$moved" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push
+        if: steps.move.outputs.moved != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: LeetCode 풀이 폴더 ${{ steps.move.outputs.moved }}개를 LeetCode/ 로 이동"
+          git push origin HEAD:main
+
+      - name: Nothing to do
+        if: steps.move.outputs.moved == '0'
+        run: echo "이동할 폴더가 없습니다."
