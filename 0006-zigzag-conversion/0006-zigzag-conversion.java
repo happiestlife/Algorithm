@@ -24,7 +24,6 @@ class Solution {
 
         StringBuilder result = new StringBuilder();
         for(int i = 0; i < comps.length; i++) {
-            System.out.println(comps[i]);
             result = result.append(comps[i]);
         }
 
