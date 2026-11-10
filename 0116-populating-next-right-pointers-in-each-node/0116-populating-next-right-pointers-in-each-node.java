@@ -20,43 +20,22 @@ class Node {
     }
 };
 */
-import java.util.*;
-
-class LevelNode {
-    Node node;
-    int level;
-
-    public LevelNode(Node node, int level) {
-        this.node = node;
-        this.level = level;
-    }
-}
-
 class Solution {
     public Node connect(Node root) {
-        List<Node> nodesByLevel = new ArrayList<>();
-    
-        int maxLevel = 0;
-        Queue<LevelNode> q = new LinkedList<>();
-        if(root != null) {
-            q.add(new LevelNode(root, 1));
-        }
-        while(!q.isEmpty()) {
-            LevelNode curNode = q.poll();
-            nodesByLevel.add(curNode.node);
-            maxLevel = Math.max(maxLevel, curNode.level);
+        // 상단부터 && 좌측부터 한 칸씩 이동하기
+        Node leftNode = root;
+        while(leftNode != null && leftNode.left != null) {
+            Node curNode = leftNode;
+            while(curNode != null) {
+                curNode.left.next = curNode.right;
+                if(curNode.next != null) {
+                    curNode.right.next = curNode.next.left;
+                }
 
-            if(curNode.node.left != null) q.add(new LevelNode(curNode.node.left, curNode.level+1));
-            if(curNode.node.right != null) q.add(new LevelNode(curNode.node.right, curNode.level+1));
-        }
-
-        for(int i = 0; i < maxLevel; i++) {
-            int startIdx = (int)Math.pow(2, i)-1;
-            int endIdx = (int)Math.pow(2, i+1)-2;
-            for(int j = startIdx; j < endIdx; j++) {
-                Node curNode = nodesByLevel.get(j);
-                curNode.next = nodesByLevel.get(j+1);
+                curNode = curNode.next;
             }
+
+            leftNode = leftNode.left;
         }
 
         return root;
