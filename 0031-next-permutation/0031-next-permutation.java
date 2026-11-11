@@ -4,19 +4,30 @@ class Solution {
     public void nextPermutation(int[] nums) {
         if(nums.length <= 1) return;
 
-        int length = 2;
-        boolean is2DigitMaxPermutation = isMaxPermutation(nums, length);
-        if(!is2DigitMaxPermutation) {
-            int tmp = nums[nums.length-2];
-            nums[nums.length-2] = nums[nums.length-1];
-            nums[nums.length-1] = tmp;
+        // 마지막으로 생성된 결과가 최대 Premutation이라면, 가장 낮은 Premutation으로 변경
+        Integer[] maxPremutation = new Integer[nums.length];
+        for(int i = 0; i < maxPremutation.length; i++) {
+            maxPremutation[i] = nums[i];
+        }
+        Arrays.sort(maxPremutation, Collections.reverseOrder());
+
+        boolean isMaxPremutation = true;
+        for(int i = 0; i < nums.length; i++) {
+            if(nums[i] != maxPremutation[i]) {
+                isMaxPremutation = false;
+                break;
+            }
+        }
+
+        if(isMaxPremutation) {
+            Arrays.sort(nums);
             return;
         }
 
-        length++;
+
+        int length = 2;
         while(length <= nums.length) {
             boolean isCurDigitMaxPermutation = isMaxPermutation(nums, length);
-            // System.out.println(isMaxPermutation(nums, length));
             if(isCurDigitMaxPermutation) {
                 length++;
                 continue;
@@ -62,29 +73,9 @@ class Solution {
                 //     System.out.print(nums[i] + " ");
                 // }
                 // System.out.println();
-                return;
-            }
-        }
-
-        // 마지막으로 생성된 결과가 최대 Premutation이라면, 가장 낮은 Premutation으로 변경
-        Integer[] maxPremutation = new Integer[nums.length];
-        for(int i = 0; i < maxPremutation.length; i++) {
-            maxPremutation[i] = nums[i];
-        }
-        Arrays.sort(maxPremutation, Collections.reverseOrder());
-
-        boolean isMaxPremutation = true;
-        for(int i = 0; i < nums.length; i++) {
-            if(nums[i] != maxPremutation[i]) {
-                isMaxPremutation = false;
                 break;
             }
         }
-
-        if(isMaxPremutation) Arrays.sort(nums);
-        
-
-
     }
 
     private boolean isMaxPermutation(int[] nums, int length) {
