@@ -1,19 +1,22 @@
+import java.util.*;
+
 class Solution {
     public int jump(int[] nums) {
-        int[] dp = new int[nums.length+1];
-        for(int i = 0; i < nums.length; i++) {
-            int curMaxJumpCnt = nums[i];
-            for(int j = 1; j <= curMaxJumpCnt; j++) {
-                int jumpTarget = i + j;
-                if(jumpTarget >= nums.length) break;
-                else if(dp[jumpTarget] > 0) continue;
+        int[] dp = new int[nums.length];
+        
+        Queue<Integer> q = new LinkedList();
+        q.add(0);
+        while(!q.isEmpty()) {
+            int curIdx = q.poll();
 
-                dp[jumpTarget] = dp[i] + 1;
+            for(int i = 1; i <= nums[curIdx]; i++) {
+                int targetIdx = curIdx + i;
+                if(targetIdx >= nums.length || dp[targetIdx] > 0) continue;
+
+                dp[targetIdx] = dp[curIdx]+1;
+                q.add(targetIdx);
             }
-
-            // System.out.println(Arrays.toString(dp));
         }
-        // System.out.println(Arrays.toString(dp));
 
         return dp[nums.length-1];
     }
