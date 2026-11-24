@@ -1,14 +1,18 @@
 # [Gold IV] N-Queen - 9663 
 
-[문제 링크](https://www.acmicpc.net/problem/9663) 
+[문제 링크](https://acmicpc.net/problem/9663) 
 
 ### 성능 요약
 
-메모리: 19036 KB, 시간: 6892 ms
+메모리: 15444 KB, 시간: 1994 ms
 
 ### 분류
 
-백트래킹(backtracking), 브루트포스 알고리즘(bruteforcing)
+백트래킹, 브루트포싱
+
+### 제출 일자
+
+2026년 11월 24일 18:05:18
 
 ### 문제 설명
 
